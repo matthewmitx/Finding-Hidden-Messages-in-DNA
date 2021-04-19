@@ -1,20 +1,22 @@
 package MessagesInDNA;
 
-/* Program to find the all k-mers of specified size k of a given DNA segment 
-   Program contains commented out alternate functionality to find the most 
-   frequent kmers in the given DNA segment
-   Input: String segment 
-   		  int k 
-   Output: all k-mers (or most frequent kmers)
+/* Contains functions:
+		frequentWords
+		hammingDistance
 */
 
 import java.util.HashMap;
 
-/* use dataset2.txt as input */
-
 public class FrequentWords{
 
-	/* Function useable by FindClumps program to extract all possible k-mers */
+
+	/* 	Function to find the all k-mers of specified size k of a given DNA segment 
+ 	   	Function contains commented out alternate functionality to find the most 
+ 	   	frequent kmers in the given DNA segment
+  	   	Input: String segment 
+   			   Integer k 
+  	   	Output: HashMap all k-mers, frequency pairs (or most frequent kmers)
+	*/
 	public static HashMap<String, Integer> frequentWords(String segment, int k){
 
 		HashMap<String,Integer> frequencyTable = new HashMap<>();

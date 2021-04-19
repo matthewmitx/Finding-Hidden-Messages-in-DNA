@@ -1,11 +1,37 @@
-import MessagesInDNA.FrequentWords;
-import MessagesInDNA.FindClumps;
-import java.util.Scanner;
-import java.util.HashSet;
+import MessagesInDNA.PatternMatching;
+
+import java.util.*;
 
 class Main{
 
+	/* Main used for Approximate Pattern Matching program */
 	public static void main(String[] args){
+
+		Scanner scanner = new Scanner(System.in);
+		String pattern = scanner.next();
+		String segment = scanner.next();
+		Integer d = scanner.nextInt();
+
+		Integer count = PatternMatching.approxPatternCount(segment,pattern,d);
+
+		System.out.println(count);
+
+	}
+
+	/* Main used for minimumSkew program */
+	/* public static void main(String[] args){
+
+		Scanner scanner = new Scanner(System.in);
+		String genome = scanner.next();
+
+		ArrayList<Integer> minimums = MinimumSkew.minimumSkew(genome);
+
+		System.out.println(minimums.toString());
+
+	} */
+
+	/* Main used for FindClumps program */
+	/* public static void main(String[] args){
 
 		Scanner scanner = new Scanner(System.in);
 		String segment = scanner.next();
@@ -22,6 +48,6 @@ class Main{
 
 		System.out.println(clumps.size());
 
-	}
+	} */
 
 }

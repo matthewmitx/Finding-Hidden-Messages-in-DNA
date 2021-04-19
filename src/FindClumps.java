@@ -1,13 +1,7 @@
 package MessagesInDNA;
 
-/* Program to find all l sized clumps in a DNA segment that are of length k 
-   and repeat at least t times.
-   Input: String segment - full DNA segment to traverse
-   		  int k - size of kmer pattern
-   		  int l - size of clump in which to find repeating patterns
-   		  int t - minimum number of repititions for qualifying kmer pattern
-   Output: All qualifying kmers in segment
-   		   (size k patterns in repeating at least t times in a window of size l)
+/* Contains functions
+		findClumps
 */
 
 import java.util.HashMap;
@@ -15,6 +9,15 @@ import java.util.HashSet;
 
 public class FindClumps{
 
+	/* 	Program to find all l sized clumps in a DNA segment that are of length k 
+   		and repeat at least t times.
+   		Input: String segment - full DNA segment to traverse
+   		  	int k - size of kmer pattern
+   		  	int l - size of clump in which to find repeating patterns
+   		  	int t - minimum number of repititions for qualifying kmer pattern
+   		Output: All qualifying kmers in segment
+   		   		(size k patterns in repeating at least t times in a window of size l)
+	*/
 	public static HashSet<String> findClumps(String segment, int k, int l, int t){
 
 		HashSet<String> patterns = new HashSet<>();
@@ -47,10 +50,8 @@ public class FindClumps{
 				patterns.add(newKmer);
 			}
 		}
-
-
 		return patterns;
-
 	}
+	
 
 }

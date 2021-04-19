@@ -5,7 +5,9 @@ JC = javac
 	$(JC) $(JFLAGS) $*.java
 
 CLASSES = \
-	FrequentWords.java
+	FrequentWords.java \
+	FindClumps.java \
+	MinimumSkew.java
 
 default: classes
 
