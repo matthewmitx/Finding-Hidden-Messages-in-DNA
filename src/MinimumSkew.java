@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class MinimumSkew{
 
-	/* 	Program to find the possible location of the replication origin by
+	/* 	Function to find the possible location of the replication origin by
    		measuring the total difference between guanine and cytosine level at
    		each nucleotide.
    		Input: String genome
@@ -40,7 +40,6 @@ public class MinimumSkew{
 			}
 		
 		}
-
 		return minimums;
 	}
 

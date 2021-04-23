@@ -3,6 +3,7 @@ package MessagesInDNA;
 /* Contains functions
 		patternMatching
 		approxPatternMatching
+		approxPatternCount
 		hammingDistance
 */
 

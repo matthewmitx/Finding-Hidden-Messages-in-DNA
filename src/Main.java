@@ -1,53 +1,50 @@
-import MessagesInDNA.PatternMatching;
+import MessagesInDNA.FrequentWords;
+import MessagesInDNA.MinimumSkew;
+import MessagesInDNA.FindClumps;
 
 import java.util.*;
+import java.io.*;
 
 class Main{
 
-	/* Main used for Approximate Pattern Matching program */
+	/* Main used for frequent words with mismatches program */
 	public static void main(String[] args){
 
-		Scanner scanner = new Scanner(System.in);
-		String pattern = scanner.next();
-		String segment = scanner.next();
-		Integer d = scanner.nextInt();
+		HashSet<String> n = FrequentWords.findNeighbors("CCAGTCAATG", 1);
+		System.out.println(n.size());
+		System.out.println(n.toString());
 
-		Integer count = PatternMatching.approxPatternCount(segment,pattern,d);
-
-		System.out.println(count);
-
-	}
-
-	/* Main used for minimumSkew program */
-	/* public static void main(String[] args){
-
-		Scanner scanner = new Scanner(System.in);
+		/*Scanner scanner = new Scanner(System.in);
 		String genome = scanner.next();
 
-		ArrayList<Integer> minimums = MinimumSkew.minimumSkew(genome);
+		ArrayList<Integer> mins = MinimumSkew.minimumSkew(genome);
 
-		System.out.println(minimums.toString());
+		Integer minimum = mins.get(0);
 
-	} */
+		System.out.println(minimum);
 
-	/* Main used for FindClumps program */
-	/* public static void main(String[] args){
+		String oriCentered = genome.substring(minimum-250,minimum+250);
+		String oriLeft = genome.substring(minimum-500,minimum);
+		String oriRight = genome.substring(minimum,minimum+500);
 
-		Scanner scanner = new Scanner(System.in);
-		String segment = scanner.next();
-		int k = scanner.nextInt();
-		int l = scanner.nextInt();
-		int t = scanner.nextInt();
-		scanner.close();
-
-		HashSet<String> clumps = FindClumps.findClumps(segment,k,l,t);
-
-		for(String clump : clumps){
-			System.out.println(clump);
+		HashMap<String,Integer> dnaABoxesCentered = FrequentWords.frequentWordsWithMismatchesAndRC(oriCentered,9,1);
+		System.out.println("Ori centered: " + dnaABoxesCentered.size());
+		for(HashMap.Entry<String,Integer> item : dnaABoxesCentered.entrySet()){
+			System.out.println(item.getKey() + ": " + item.getValue());
 		}
 
-		System.out.println(clumps.size());
+		HashMap<String,Integer> dnaABoxesLeft = FrequentWords.frequentWordsWithMismatchesAndRC(oriLeft,9,1);
+		System.out.println("Ori left: " + dnaABoxesLeft.size());
+		for(HashMap.Entry<String,Integer> item : dnaABoxesLeft.entrySet()){
+			System.out.println(item.getKey() + ": " + item.getValue());
+		}
 
-	} */
+		HashMap<String,Integer> dnaABoxesRight = FrequentWords.frequentWordsWithMismatchesAndRC(oriRight,9,1);
+		System.out.println("Ori right: " + dnaABoxesRight.size());
+		for(HashMap.Entry<String,Integer> item : dnaABoxesRight.entrySet()){
+			System.out.println(item.getKey() + ": " + item.getValue());
+		}*/
+
+	}
 
 }
