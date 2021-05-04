@@ -19,7 +19,7 @@ public class FrequentWords{
  	   	Function contains commented out alternate functionality to find the most 
  	   	frequent kmers in the given DNA segment
   	   	Input: String segment 
-   			   Integer k 
+   			       Integer k 
   	   	Output: HashMap all k-mers, frequency pairs (or most frequent kmers)
 	*/
 	public static HashMap<String, Integer> frequentWords(String segment, Integer k){
@@ -44,7 +44,7 @@ public class FrequentWords{
 
 
 	/* 	Function to find the most frequent k-mers of specified size k of a
-		given DNA segment with mismatch limit d. 
+		  given DNA segment with mismatch limit d. 
   	   	Input: String segment 
    			   Integer k 
    			   Integer d
@@ -78,10 +78,10 @@ public class FrequentWords{
 
 
   	/* 	Function to find the most frequent k-mers and their reverse
-  		complements of a given DNA segment with mismatch limit d. 
+  		  complements of a given DNA segment with mismatch limit d. 
   	   	Input: String segment 
-   			   Integer k 
-   			   Integer d
+   			      Integer k 
+   			      Integer d
   	   	Output: HashMap of most frequent kmers, count pairs
 	*/
   	public static HashMap<String,Integer> frequentWordsWithMismatchesAndRC(String segment, Integer k, Integer d){
@@ -118,18 +118,18 @@ public class FrequentWords{
 
 
   	/* 	Function to find all variations of the given pattern with as many
-		as d mismatches.
-		Input: 	String pattern
-				Integer d (number of mismatches)
-		Output: Set of all neighbor patterns
-	*/
+		    as d mismatches.
+		    Input: 	String pattern
+				        Integer d (number of mismatches)
+		    Output: Set of all neighbor patterns
+	  */
   	public static HashSet<String> findNeighbors(String pattern, Integer d){
 
   		HashSet<String> nucleotides = new HashSet<>();
   		nucleotides.add("A");
   		nucleotides.add("T");
   		nucleotides.add("G");
-		nucleotides.add("C");
+		  nucleotides.add("C");
 
   		if(d == 0)
   			return (HashSet<String>) Collections.singleton(pattern);

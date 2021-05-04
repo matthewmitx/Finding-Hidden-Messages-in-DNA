@@ -17,14 +17,14 @@ MSGINDNA = .
 # typing 'make' will invoke the first target entry in the makefile 
 # (the default one in this case)
 #
-default: ReverseComplement.class PatternMatching.class FrequentWords.class FindClumps.class MinimumSkew.class
+default: ReverseComplement.class PatternMatching.class FrequentWords.class FindClumps.class MinimumSkew.class MotifEnumeration.class
 
 main: Main.class
 
 # this target entry builds the Average class
 # the Average.class file is dependent on the Average.java file
 # and the rule associated with this entry gives the command to create it
-#
+
 ReverseComplement.class: ReverseComplement.java
 	$(JCC) $(JFLAGSDIR) $(MSGINDNA) ReverseComplement.java
 
@@ -40,7 +40,10 @@ FindClumps.class: FindClumps.java FrequentWords.java
 MinimumSkew.class: MinimumSkew.java
 	$(JCC) $(JFLAGSDIR) $(MSGINDNA) MinimumSkew.java
 
-Main.class: Main.java ReverseComplement.java PatternMatching.java FrequentWords.java FindClumps.java MinimumSkew.java
+MotifEnumeration.class: MotifEnumeration.java FrequentWords.java PatternMatching.java
+	$(JCC) $(JFLAGSDIR) $(MSGINDNA) MotifEnumeration.java
+
+Main.class: Main.java ReverseComplement.java PatternMatching.java FrequentWords.java FindClumps.java MinimumSkew.java MotifEnumeration.java
 	$(JCC) $(JFLAGS) Main.java
 
 # To start over from scratch, type 'make clean'.  
