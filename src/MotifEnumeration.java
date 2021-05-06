@@ -5,6 +5,10 @@ package MessagesInDNA;
 	medianString
 	distanceBetweenPatternAndStrings
 	profileMostProbableKmer
+	greedyMotifSearch
+	createProfileMatrix
+	createLaplaceProfileMatrix
+	computeScore
 	computeProbability
 */
 
@@ -137,7 +141,9 @@ public class MotifEnumeration{
 	}
 
 	/* 
-		Function to 
+		Function to search for the best set of motifs from dna stands - dna. The algorithm 
+		does this by choosing a set of motifs from all strands (2 to t) for each k-mer 
+		existing in the first strand. The function then returns the best set of motifs.
 		Input: 	List<String> dna
 				Integer k
 				Integer t (size of dna list)
@@ -178,7 +184,14 @@ public class MotifEnumeration{
 	}
 
 
-	/* creates a 4 x k matrix of probabilites */
+	/* 
+		Function to create a profile matrix for a given set of motifs. This profile matrix
+		contains the likelihood of each of the four nucleotides at each position from the
+		set of motifs.
+		Input: 	List<String> motifs
+				Integer k
+		Output:	4 x k matrix with probabilities of each nucleotide A,C,G,T
+	*/
 	public static float[][] createProfileMatrix(List<String> motifs, Integer k){
 
 		if(motifs.isEmpty())
@@ -215,7 +228,15 @@ public class MotifEnumeration{
 	}
 
 
-	/* creates a 4 x k matrix of probabilites */
+	/* 
+		Function to create a profile matrix for a given set of motifs based on the Laplace
+		rule of succession. This profile matrix contains the likelihood of each of the four
+		nucleotides at each position from the set of motifs. The Laplace rule ensure that no
+		single nucleotide has a probability of zero at any position in the profile matrix.
+		Input: 	List<String> motifs
+				Integer k
+		Output:	4 x k matrix with probabilities of each nucleotide A,C,G,T
+	*/
 	public static float[][] createLaplaceProfileMatrix(List<String> motifs, Integer k){
 
 		if(motifs.isEmpty())
@@ -252,7 +273,13 @@ public class MotifEnumeration{
 	}
 
 
-	/* profileMatrix (4 x k) */
+	/* 
+		Function to compute the score of a profile matrix. Score is similar to entropy 
+		in that it attempts to measure the certainty of a specific outcome. 
+		Input: 	float[][] profileMatrix
+				Integer k
+		Output:	Float score of the profile matrix
+	*/
 	public static Float computeScore(float[][] profileMatrix, Integer k){
 
 		float sum = 0; 
