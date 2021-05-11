@@ -1,5 +1,6 @@
 import MessagesInDNA.FrequentWords;
 import MessagesInDNA.MotifEnumeration;
+import MessagesInDNA.Helper;
 
 import java.util.*;
 import java.io.*;
@@ -9,18 +10,24 @@ class Main{
 	/* Main used for frequent words with mismatches program */
 	public static void main(String[] args){
 
-		Scanner scanner = new Scanner(System.in);
+		/*Scanner scanner = new Scanner(System.in);
 
 		Integer k = scanner.nextInt();
-		scanner.nextLine();
+		Integer t = scanner.nextInt();
 
 		List<String> dna = new ArrayList<>();
 
 		while(scanner.hasNext()){
-			dna.add(scanner.nextLine());
+			dna.add(scanner.next());
 		}
 
-		System.out.println(MotifEnumeration.medianString(k,dna));
+		List<String> res = MotifEnumeration.randomizedMotifSearch(dna,k,10000);
+
+		for(String r : res){
+			System.out.println(r);
+		}
+
+		System.out.println(MotifEnumeration.computeScore(res,k));*/
 
 	}
 

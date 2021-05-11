@@ -18,7 +18,7 @@ public class MotifEnumeration{
 
 	public static final Integer NUM_NUCLEOTIDES = 4;
 
-	/* 	Function to find the all k-mers of specified size k of a given list of 
+	/* 	Function to find the all k-mers of specified size k from a given list of 
 		DNA segments. The k-mers may contain at most d mismatches but they should
 		be present within every DNA segment in list dna. 
   	   	Input:  String dna 
@@ -140,6 +140,7 @@ public class MotifEnumeration{
 		return finalPattern;
 	}
 
+
 	/* 
 		Function to search for the best set of motifs from dna stands - dna. The algorithm 
 		does this by choosing a set of motifs from all strands (2 to t) for each k-mer 
@@ -181,6 +182,93 @@ public class MotifEnumeration{
 			}
 		}
 		return bestMotifs;
+	}
+
+
+	/*
+		Function to find a set of motifs from a set of strings dna. The motifs found will be of length k. The function
+		uses a ranadomized approach in which it chooses a random pattern from each string in dna. It motifies this 
+		pattern on each iteration by using the set of patterns' profile matrix to choose the patterns that better match.
+		This algorithm works by running many times. Inevitably, the algorithm will choose the actual motifs on one of
+		these iterations, therefore having the lowest score and giving the best set of motifs.
+		Input: 	List<String> dna
+				Integer k
+				Integer iteration (number of times to run the algorithm)
+		Output:	List<String> bestMotifs resulting from function run -iteration- times
+	*/
+	public static List<String> randomizedMotifSearch(List<String> dna, Integer k, Integer iterations){
+
+		if(dna.size() <= 0)
+			return new ArrayList<String>();
+
+		int length = dna.get(0).length();
+
+		List<String> absoluteBestMotifs = new ArrayList<>();
+		int absoulteBestScore = Integer.MAX_VALUE;
+
+		for(int i = 0; i < iterations; i++){
+
+			List<String> motifs = new ArrayList<>();
+
+			for(String strand : dna){
+				int rand = Helper.randomNumber(length-k+1);
+				String motif = strand.substring(rand,rand+k);
+				motifs.add(motif);
+			}
+
+			List<String> bestMotifs = new ArrayList<>(motifs);
+
+			while(true){
+				float[][] profileMatrix = createLaplaceProfileMatrix(motifs,k);
+				motifs = generateMostProbableMotifs(dna,k,profileMatrix);
+				int bestScore = computeScore(bestMotifs,k);
+				if(computeScore(motifs,k) < bestScore){
+					bestMotifs = new ArrayList<>(motifs);
+				}
+				else{
+					if(bestScore < absoulteBestScore){
+						absoulteBestScore = bestScore;
+						absoluteBestMotifs = new ArrayList<>(bestMotifs);
+					}
+					break;
+				}
+			}
+		}
+		return absoluteBestMotifs;
+	}
+
+
+	/*
+		Function to determine the most probable candidates to be motifs in a set of strings dna, given
+		a profile matrix. 
+		Input: 	List<String> dna
+				Integer k
+				float[][] profile
+		Output:	List<String> with the best candidates to be the motif strings
+	*/
+	public static List<String> generateMostProbableMotifs(List<String> dna, Integer k, float[][] profile){
+
+		List<String> motifs = new ArrayList<>();
+
+		for(String strand : dna){
+
+			String bestMotif = strand.substring(0,k);
+			double bestProbability = computeProbability(bestMotif,profile);
+
+			double probability;
+
+			for(int i = 1; i < strand.length()-k+1; i++){
+				String motif = strand.substring(i,i+k);
+				probability = computeProbability(motif,profile);
+
+				if(probability > bestProbability){
+					bestProbability = probability;
+					bestMotif = motif;
+				}
+			}
+			motifs.add(bestMotif);
+		}
+		return motifs;
 	}
 
 
@@ -232,7 +320,8 @@ public class MotifEnumeration{
 		Function to create a profile matrix for a given set of motifs based on the Laplace
 		rule of succession. This profile matrix contains the likelihood of each of the four
 		nucleotides at each position from the set of motifs. The Laplace rule ensure that no
-		single nucleotide has a probability of zero at any position in the profile matrix.
+		single nucleotide has a probability of zero at any position in the profile matrix by
+		using pseduocounts for nucleotides that do not appear in the sample size.
 		Input: 	List<String> motifs
 				Integer k
 		Output:	4 x k matrix with probabilities of each nucleotide A,C,G,T
@@ -276,11 +365,11 @@ public class MotifEnumeration{
 	/* 
 		Function to compute the score of a profile matrix. Score is similar to entropy 
 		in that it attempts to measure the certainty of a specific outcome. 
-		Input: 	float[][] profileMatrix
+		Input: 	float[][] profile
 				Integer k
 		Output:	Float score of the profile matrix
 	*/
-	public static Float computeScore(float[][] profileMatrix, Integer k){
+	public static Float computeScore(float[][] profile, Integer k){
 
 		float sum = 0; 
 
@@ -288,14 +377,60 @@ public class MotifEnumeration{
 			float greatest = 0;
 			float currSum = 0;
 			for(int j = 0; j < NUM_NUCLEOTIDES; j++){
-				currSum += profileMatrix[j][i];
-				if(profileMatrix[j][i] > greatest)
-					greatest = profileMatrix[j][i];
+				currSum += profile[j][i];
+				if(profile[j][i] > greatest)
+					greatest = profile[j][i];
 			}
 			currSum -= greatest;
 			sum += currSum;
 		}
 		return sum;
+	}
+
+	/* 	Same compute score function but uses a list of motifs as input rather than
+		a profile matrix.
+	*/
+	public static Integer computeScore(List<String> motifs, Integer k){
+
+		int sum = 0; 
+		int[] counts = new int[NUM_NUCLEOTIDES];
+
+		for(int i = 0; i < k; i++){
+			for(int j = 0; j < motifs.size(); j++){
+				switch(motifs.get(j).charAt(i)){
+					case 'A' :
+						counts[0]++;
+						break;
+					case 'C' :
+						counts[1]++;
+						break;
+					case 'G' :
+						counts[2]++;
+						break;
+					case 'T' :
+						counts[3]++;
+						break;
+				}
+			}
+			int greatest = greatest(counts);
+			sum += (motifs.size() - greatest);
+			counts[0] = counts[1] = counts[2] = counts[3] = 0;
+		}
+		return sum;
+	}
+
+	/* Returns the greatest number in an array */
+	public static Integer greatest(int[] nums){
+		if(nums.length == 0)
+			return 0;
+
+		int greatest = nums[0];
+		for(int i = 1; i < nums.length; i++){
+			if(nums[i] > greatest){
+				greatest = nums[i];
+			}
+		}
+		return greatest;
 	}
 
 
