@@ -7,14 +7,14 @@ import java.lang.Math.*;
 
 public class Helper{
 
-	/* 	Generates and returns a random number 1 through n */
+	/* 	Generates and returns a random number 0 through (n-1) */
 	public static Integer randomNumber(Integer n){
 		double rand = Math.random();
 		int wholeNum = (int) (rand * (double) n);
 		return wholeNum;
 	}
 
-	/* 	Generates and returns a random number 1 through size of probabilities list 
+	/* 	Generates and returns a random number 0 through (size of list - 1) 
 	`	based on the the probability distribution contained in the list */
 	public static Integer random(List<Double> probabilities){
 		

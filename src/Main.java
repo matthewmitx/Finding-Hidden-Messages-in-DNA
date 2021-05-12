@@ -10,10 +10,11 @@ class Main{
 	/* Main used for frequent words with mismatches program */
 	public static void main(String[] args){
 
-		/*Scanner scanner = new Scanner(System.in);
+		Scanner scanner = new Scanner(System.in);
 
 		Integer k = scanner.nextInt();
 		Integer t = scanner.nextInt();
+		Integer starts = scanner.nextInt();
 
 		List<String> dna = new ArrayList<>();
 
@@ -21,13 +22,13 @@ class Main{
 			dna.add(scanner.next());
 		}
 
-		List<String> res = MotifEnumeration.randomizedMotifSearch(dna,k,10000);
+		List<String> res = MotifEnumeration.gibbsSampler(dna,k,t,starts,100);
 
 		for(String r : res){
 			System.out.println(r);
 		}
 
-		System.out.println(MotifEnumeration.computeScore(res,k));*/
+		System.out.println(MotifEnumeration.computeScore(res,k));
 
 	}
 

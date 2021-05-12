@@ -141,6 +141,25 @@ public class MotifEnumeration{
 	}
 
 
+	/* Profile Randomly Generated K-mer
+		Needs testing
+	*/
+	public static String profileRandomlyGenerateKmer(String text, Integer k, float[][] profile){
+
+		List<Double> probabilities = new ArrayList<>();
+
+		for(int i = 0; i < text.length()-k+1; i++){
+			String pattern = text.substring(i,i+k);
+			Double probability = (double) computeProbability(pattern,profile);
+			probabilities.add(probability);
+		}
+
+		int index = Helper.random(probabilities);
+		return text.substring(index,index+k);
+
+	}
+
+
 	/* 
 		Function to search for the best set of motifs from dna stands - dna. The algorithm 
 		does this by choosing a set of motifs from all strands (2 to t) for each k-mer 
@@ -231,6 +250,57 @@ public class MotifEnumeration{
 						absoluteBestMotifs = new ArrayList<>(bestMotifs);
 					}
 					break;
+				}
+			}
+		}
+		return absoluteBestMotifs;
+	}
+
+
+	/* Gibbs Sampler
+		Function to
+		Input:
+		Output: 
+	*/
+	public static List<String> gibbsSampler(List<String> dna, Integer k, Integer t, Integer starts, Integer iterations){
+
+		if(dna.size() <= 0)
+			return new ArrayList<String>();
+
+		List<String> absoluteBestMotifs = new ArrayList<>();
+		int absoulteBestScore = Integer.MAX_VALUE;
+
+		for(int i = 0; i < iterations; i++){
+
+			List<String> motifs = new ArrayList<>();
+
+			for(String strand : dna){
+				int rand = Helper.randomNumber(dna.get(0).length()-k+1);
+				String motif = strand.substring(rand,rand+k);
+				motifs.add(motif);
+			}
+
+			List<String> bestMotifs = new ArrayList<>(motifs);
+
+			for(int j = 0; j < starts; j++){
+
+				int strandNum = Helper.randomNumber(t);
+				motifs.remove(strandNum);
+
+				float[][] profileMatrix = createLaplaceProfileMatrix(motifs,k);
+
+				String bestMotifFromStrand = profileRandomlyGenerateKmer(dna.get(strandNum),k,profileMatrix);
+				motifs.add(strandNum,bestMotifFromStrand);
+
+				int bestScore = computeScore(bestMotifs,k);
+				if(computeScore(motifs,k) < bestScore){
+					bestMotifs = new ArrayList<>(motifs);
+				}
+				else{
+					if(bestScore < absoulteBestScore){
+						absoulteBestScore = bestScore;
+						absoluteBestMotifs = new ArrayList<>(bestMotifs);
+					}
 				}
 			}
 		}
